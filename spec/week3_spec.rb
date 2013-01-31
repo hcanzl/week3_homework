@@ -1,10 +1,13 @@
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 require 'week3'
 
+$global_var = "I'm a Global!"
+
 describe 'Variable type' do
 
   # TODO: Figure out where to set these (but NOT inside each test)
-
+  A_CONSTANT = "I'm a CONSTANT"
+  
   it 'Constant is visible here' do
     A_CONSTANT.should eq "I'm a CONSTANT"
   end
@@ -30,7 +33,7 @@ describe 'Week3 method' do
 
   it '#name= sets the @name instance variable (aka attribute)' do
     expected = 'Jason'
-    subject.name = expected
+    subject.name= expected
     subject.name.should eq expected
   end
 
@@ -40,7 +43,7 @@ describe 'Week3 method' do
     actual = subject.halve input
     actual.should eq expected
   end
-
+  
   it '#halve does not modify input parameter' do
     input = [1,2,3,4]
     expected = [1,2,3,4]
@@ -51,7 +54,7 @@ describe 'Week3 method' do
   it '#halve! returns first half of an array' do
     input = [1,2,3,4]
     expected = [1,2]
-    actual = subject.halve input
+    actual = subject.halve! input
     actual.should eq expected
   end
 
@@ -97,12 +100,25 @@ describe 'Week3 method' do
     #
     # challenge: write the tests first
     #
-    it 'returns defaults when no parameter is provided'
 
-    it 'returns default value when :path is missing from parameter'
+    it 'returns defaults when no parameter is provided' do
+      expected_config = {:path => './', :version  => '0.1.0', :mode => 'production'}
+      new_config = subject.configure
+      new_config.should eq expected_config
+    end
 
-    it 'returns overridden value when :version is included in the parameter'
+    it 'returns default value when :path is missing from parameter' do
+      expected_config = {:path => './', :version  => '5.1.0', :mode => 'integration'}
+      new_config = subject.configure({:version  => '5.1.0', :mode => 'integration'})
+      new_config.should eq expected_config
+    end
 
+    it 'returns overridden value when :version is included in the parameter' do
+      expected_config = {:path => './', :version  => '5.1.0', :mode => 'production'}
+      new_config = subject.configure({:version  => '5.1.0'})
+      new_config.should eq expected_config
+    end
+    
   end
 end
 
